@@ -23,14 +23,14 @@ router.get('/:id', async (req, res) => {
 // GET all albums from an artist
 router.get('/:id/albums', async (req, res) => {
   res.json({
-    endpoint: `get all albums from ${req.params.id}`,
+    endpoint: `get all albums from artist ${req.params.id}`,
   });
 });
 
 // GET all tracks from an artist
 router.get('/:id/tracks', async (req, res) => {
   res.json({
-    endpoint: `get all tracks from ${req.params.id}`,
+    endpoint: `get all tracks from artist ${req.params.id}`,
   });
 });
 
@@ -73,4 +73,5 @@ router.delete('/:id', async (req, res) => {
     endpoint: `delete artist ${req.params.id}`,
   });
 });
+
 module.exports = router;
