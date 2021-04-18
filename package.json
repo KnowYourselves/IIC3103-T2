@@ -6,7 +6,7 @@
     "start": "node ./bin/www",
     "dev": "DEBUG=t2:* nodemon ./bin/www",
     "lint": "eslint --fix . --ext js,jsx,ts,tsx",
-    "prepare": "husky install",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@prisma/client": "^2.21.2",
@@ -23,5 +23,8 @@
     "lint-staged": "^10.5.4",
     "nodemon": "^2.0.7",
     "prisma": "^2.21.2"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": "eslint --fix"
   }
 }
