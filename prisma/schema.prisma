@@ -21,14 +21,14 @@ model Album {
   id String @id
   name String
   genre String
-  songs Song[]
+  tracks Track[]
 
   // Author
   author Artist @relation(fields: [authorId], references: [id])
   authorId String
 }
 
-model Song {
+model Track {
   id String @id
   name String
   duration Float
