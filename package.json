@@ -6,7 +6,8 @@
     "start": "node ./bin/www",
     "dev": "DEBUG=t2:* nodemon ./bin/www",
     "lint": "eslint --fix . --ext js,jsx,ts,tsx",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "postinstall": "npx prisma migrate deploy"
   },
   "dependencies": {
     "@prisma/client": "^2.21.2",
