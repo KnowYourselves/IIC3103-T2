@@ -10,7 +10,31 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Test {
+model Artist {
   id Int @default(autoincrement()) @id
-  test String
+  name String
+  age Int
+  albums Album[]
+}
+
+model Album {
+  id Int @default(autoincrement()) @id
+  name String
+  genre String
+  songs Song[]
+
+  // Author
+  author Artist @relation(fields: [authorId], references: [id])
+  authorId Int
+}
+
+model Song {
+  id Int @default(autoincrement()) @id
+  name String
+  duration Float
+  times_played Int
+
+  // Album
+  album Album @relation(fields: [albumId], references: [id])
+  albumId Int
 }
