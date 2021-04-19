@@ -1,5 +1,6 @@
 const express = require('express');
 const logger = require('morgan');
+const { Prisma } = require('@prisma/client');
 const indexRouter = require('./routes');
 
 const app = express();
@@ -24,7 +25,15 @@ app.use((req, res, next) => {
 // error handling
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
-  res.status(500).send('Something broke!');
+  if (err instanceof Prisma.PrismaClientValidationError) {
+    res.sendStatus(400);
+  } else if (err.code === 'P2002') {
+    res.status(409).send(err.instance);
+  } else if (err.code === 'P2025') {
+    res.sendStatus(422);
+  } else {
+    res.sendStatus(500);
+  }
 });
 
 module.exports = app;

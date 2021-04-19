@@ -96,6 +96,12 @@ router.post('/', async (req, res, next) => {
     });
     res.status(201).json(annotateArtist(artist, req));
   } catch (err) {
+    if (err.code === 'P2002') {
+      const artist = await prisma.artist.findUnique({
+        where: { id: stringToID(req.body.name) },
+      });
+      err.instance = annotateArtist(artist, req);
+    }
     next(err);
   }
 });
@@ -118,6 +124,12 @@ router.post('/:id/albums', async (req, res, next) => {
     });
     res.status(201).json(annotateAlbum(album, req));
   } catch (err) {
+    if (err.code === 'P2002') {
+      const album = await prisma.album.findUnique({
+        where: { id: stringToID(`${req.body.name}:${req.params.id}`) },
+      });
+      err.instance = annotateAlbum(album, req);
+    }
     next(err);
   }
 });

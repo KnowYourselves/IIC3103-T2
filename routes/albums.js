@@ -52,27 +52,42 @@ router.get('/:id/tracks', async (req, res, next) => {
 */
 
 // POST a new track in an album
-router.post('/:id/tracks', async (req, res) => {
-  const { name, duration } = req.body;
-  const track = await prisma.track.create({
-    data: {
-      id: stringToID(`${name}:${req.params.id}`),
-      name,
-      duration,
-      times_played: 0,
-      album: {
-        connect: {
-          id: req.params.id,
+router.post('/:id/tracks', async (req, res, next) => {
+  try {
+    const { name, duration } = req.body;
+    const track = await prisma.track.create({
+      data: {
+        id: stringToID(`${name}:${req.params.id}`),
+        name,
+        duration,
+        times_played: 0,
+        album: {
+          connect: {
+            id: req.params.id,
+          },
         },
       },
-    },
-    include: {
-      album: {
-        select: { artist_id: true },
+      include: {
+        album: {
+          select: { artist_id: true },
+        },
       },
-    },
-  });
-  res.status(201).json(annotateTrack(track, req));
+    });
+    res.status(201).json(annotateTrack(track, req));
+  } catch (err) {
+    if (err.code === 'P2002') {
+      const track = await prisma.track.findUnique({
+        where: { id: stringToID(`${req.body.name}:${req.params.id}`) },
+        include: {
+          album: {
+            select: { artist_id: true },
+          },
+        },
+      });
+      err.instance = annotateTrack(track, req);
+    }
+    next(err);
+  }
 });
 
 /*
