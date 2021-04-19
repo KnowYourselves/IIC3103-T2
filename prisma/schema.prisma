@@ -24,8 +24,8 @@ model Album {
   tracks Track[]
 
   // Author
-  author Artist @relation(fields: [authorId], references: [id])
-  authorId String
+  artist Artist @relation(fields: [artist_id], references: [id])
+  artist_id String
 }
 
 model Track {
@@ -35,6 +35,6 @@ model Track {
   times_played Int
 
   // Album
-  album Album @relation(fields: [albumId], references: [id])
-  albumId String
+  album Album @relation(fields: [album_id], references: [id])
+  album_id String
 }

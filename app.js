@@ -12,18 +12,19 @@ app.use(express.urlencoded({ extended: false }));
 // routes
 app.use('/', indexRouter);
 
-// 404
-app.use((req, res) => {
-  res.status(404);
-
-  // respond with json
-  if (req.accepts('json')) {
-    res.json({ error: 'Not found' });
-    return;
+// 405
+app.use((req, res, next) => {
+  const allowed = ['GET', 'PUT', 'POST', 'DELETE'];
+  if (!allowed.includes(req.method)) {
+    res.sendStatus(405);
   }
+  next();
+});
 
-  // default to plain-text. send()
-  res.type('txt').send('Not found');
+// error handling
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
+  res.status(500).send('Something broke!');
 });
 
 module.exports = app;
