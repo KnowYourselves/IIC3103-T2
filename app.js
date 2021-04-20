@@ -25,8 +25,13 @@ app.use((req, res, next) => {
 // error handling
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
+  console.log({
+    err,
+  });
   if (err instanceof Prisma.PrismaClientValidationError) {
     res.sendStatus(400);
+  } else if (err.code === '404') {
+    res.sendStatus(404);
   } else if (err.code === 'P2002') {
     res.status(409).send(err.instance);
   } else if (err.code === 'P2025') {

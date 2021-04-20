@@ -138,6 +138,9 @@ router.delete('/:id', async (req, res, next) => {
     });
     res.sendStatus(204);
   } catch (err) {
+    if (err.code === 'P2025') {
+      err.code = '404';
+    }
     next(err);
   }
 });
