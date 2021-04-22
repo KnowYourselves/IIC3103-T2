@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
       },
     },
   });
-  res.json(tracks.map((track) => annotateTrack(track, req)));
+  res.json(tracks.map((track) => annotateTrack(track, track.artist_id, req)));
 });
 
 // GET a track
@@ -34,7 +34,7 @@ router.get('/:id', async (req, res, next) => {
         },
       },
     });
-    res.json(annotateTrack(track, req));
+    res.json(annotateTrack(track, track.artist_id, req));
   } catch (err) {
     next(err);
   }

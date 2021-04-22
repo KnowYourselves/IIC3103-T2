@@ -1,0 +1,38 @@
+{
+  "not_found": [
+    {
+      "status": "FAILED",
+      "detail": {
+        "request": "https://expressify-api.herokuapp.com/artists/unknown_id/albums",
+        "request_body": null,
+        "expected_status": 404,
+        "expected_body": null,
+        "status_received": 200,
+        "body_received": []
+      }
+    },
+    {
+      "status": "FAILED",
+      "detail": {
+        "request": "https://expressify-api.herokuapp.com/artists/this_should_fail/albums",
+        "request_body": null,
+        "expected_status": 404,
+        "expected_body": null,
+        "status_received": 200,
+        "body_received": []
+      }
+    },
+    {
+      "status": "FAILED",
+      "detail": {
+        "request": "https://expressify-api.herokuapp.com/artists/1234566789/albums",
+        "request_body": null,
+        "expected_status": 404,
+        "expected_body": null,
+        "status_received": 200,
+        "body_received": []
+      }
+    }
+  ],
+  "get": "OK"
+}

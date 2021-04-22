@@ -19,13 +19,7 @@ const getAllTracks = async (req) => {
     include: {
       albums: {
         select: {
-          tracks: {
-            include: {
-              album: {
-                select: { artist_id: true },
-              },
-            },
-          },
+          tracks: true,
         },
       },
     },
@@ -60,20 +54,23 @@ router.get('/:id', async (req, res, next) => {
 });
 
 // GET all albums from an artist
-router.get('/:id/albums', async (req, res) => {
-  const albums = await prisma.album.findMany({
-    where: {
-      artist_id: req.params.id,
-    },
-  });
-  res.json(albums.map((album) => annotateAlbum(album, req)));
+router.get('/:id/albums', async (req, res, next) => {
+  try {
+    const { albums } = await prisma.artist.findUnique({
+      where: { id: req.params.id },
+      include: { albums: true },
+    });
+    res.json(albums.map((album) => annotateAlbum(album, req)));
+  } catch (err) {
+    next(err);
+  }
 });
 
 // GET all tracks from an artist
 router.get('/:id/tracks', async (req, res, next) => {
   try {
     const tracks = await getAllTracks(req);
-    res.json(tracks.map((track) => annotateTrack(track, req)));
+    res.json(tracks.map((track) => annotateTrack(track, req.params.id, req)));
   } catch (err) {
     next(err);
   }
